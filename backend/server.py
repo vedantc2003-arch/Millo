@@ -95,6 +95,35 @@ async def instagram_posts():
             return {"configured": True, "data": _ig_cache["data"], "stale": True}
         return {"configured": True, "data": [], "error": "Instagram feed temporarily unavailable"}
 
+class OrderItem(BaseModel):
+    name: str
+    size: int
+    price: int
+    quantity: int
+
+class OrderCreate(BaseModel):
+    name: str
+    phone: str
+    address: str
+    city: str
+    pin: str
+    items: List[OrderItem]
+    subtotal: int
+
+@api_router.post("/orders")
+async def create_order(order: OrderCreate):
+    doc = order.model_dump()
+    doc["id"] = str(uuid.uuid4())
+    doc["code"] = "MILLO-" + uuid.uuid4().hex[:6].upper()
+    doc["created_at"] = datetime.now(timezone.utc).isoformat()
+    await db.orders.insert_one(doc)
+    doc.pop("_id", None)
+    return doc
+
+@api_router.get("/orders")
+async def list_orders():
+    return await db.orders.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+
 # Include the router in the main app
 app.include_router(api_router)
 

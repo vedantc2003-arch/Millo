@@ -33,3 +33,8 @@ Build a vibrant, modern Gen Z snack brand website for MILLO — “A New Way to 
 - Added dark "Join the MILLO Community" Instagram section: live-feed ready via GET /api/instagram/posts (FastAPI + httpx, 10-min cache); shows branded fallback tiles + Follow card until IG_ACCESS_TOKEN / IG_USER_ID are set in backend/.env (placeholders added).
 - Motion overhaul: Lenis smooth momentum scrolling; masked line-by-line hero headline reveal; hero pack parallax + float + rotating packs; slow seamless editorial marquee; framer-motion scroll reveals on all sections; animated drawer/modals; animated Instagram icon in footer; hover micro-interactions on cards/buttons/nav.
 - Verified: hero rotation, IG section render, footer icon href, cart add/drawer flow all pass via Playwright.
+
+## Iteration — Sep 2026 (real order intents + owner log)
+- Checkout form now POSTs to /api/orders (FastAPI + MongoDB `orders` collection); confirmation code comes from the server (MILLO-XXXXXX). No payment — order intent only, per user request.
+- Owner view: footer "Owner · Order log" opens a modal listing all order intents (buyer name, phone, address, items, total, timestamp) via GET /api/orders. Not password-protected (prototype).
+- Verified end-to-end: placed order in browser (MILLO-669022, Asha Rao), appeared in order log; API curl POST/GET validated.
