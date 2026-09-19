@@ -28,3 +28,8 @@ Build a vibrant, modern Gen Z snack brand website for MILLO — “A New Way to 
 - Hero now auto-rotates through all 3 product packs (CRUNCH → POPS → CRISPS) every 2.6s with crossfade; caption counter and label update per slide.
 - Footer Instagram link now clickable → https://www.instagram.com/millo.snacks (opens in new tab); also added under "Need help?" column.
 - Verified via Playwright: slide labels cycle 01/03 → 03/03 → 01/03; Instagram href/target confirmed.
+
+## Iteration — Sep 2026 (Instagram feed + motion overhaul)
+- Added dark "Join the MILLO Community" Instagram section: live-feed ready via GET /api/instagram/posts (FastAPI + httpx, 10-min cache); shows branded fallback tiles + Follow card until IG_ACCESS_TOKEN / IG_USER_ID are set in backend/.env (placeholders added).
+- Motion overhaul: Lenis smooth momentum scrolling; masked line-by-line hero headline reveal; hero pack parallax + float + rotating packs; slow seamless editorial marquee; framer-motion scroll reveals on all sections; animated drawer/modals; animated Instagram icon in footer; hover micro-interactions on cards/buttons/nav.
+- Verified: hero rotation, IG section render, footer icon href, cart add/drawer flow all pass via Playwright.

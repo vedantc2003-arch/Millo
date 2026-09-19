@@ -4,6 +4,7 @@ from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
+import httpx
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List
@@ -65,6 +66,34 @@ async def get_status_checks():
             check['timestamp'] = datetime.fromisoformat(check['timestamp'])
     
     return status_checks
+
+IG_TOKEN = os.environ.get("IG_ACCESS_TOKEN")
+IG_USER_ID = os.environ.get("IG_USER_ID")
+IG_FIELDS = "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp"
+_ig_cache = {"data": None, "fetched_at": None}
+
+@api_router.get("/instagram/posts")
+async def instagram_posts():
+    if not IG_TOKEN or not IG_USER_ID:
+        return {"configured": False, "data": []}
+    now = datetime.now(timezone.utc)
+    if _ig_cache["data"] is not None and _ig_cache["fetched_at"] and (now - _ig_cache["fetched_at"]).total_seconds() < 600:
+        return {"configured": True, "data": _ig_cache["data"], "cached": True}
+    try:
+        async with httpx.AsyncClient(timeout=15) as http:
+            resp = await http.get(
+                f"https://graph.instagram.com/v21.0/{IG_USER_ID}/media",
+                params={"fields": IG_FIELDS, "limit": 9, "access_token": IG_TOKEN},
+            )
+        resp.raise_for_status()
+        data = resp.json().get("data", [])
+        _ig_cache.update(data=data, fetched_at=now)
+        return {"configured": True, "data": data}
+    except Exception:
+        logger.exception("Instagram fetch failed")
+        if _ig_cache["data"]:
+            return {"configured": True, "data": _ig_cache["data"], "stale": True}
+        return {"configured": True, "data": [], "error": "Instagram feed temporarily unavailable"}
 
 # Include the router in the main app
 app.include_router(api_router)
