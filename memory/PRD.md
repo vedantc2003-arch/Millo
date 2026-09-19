@@ -24,3 +24,7 @@ Build a vibrant, modern Gen Z snack brand website for MILLO — “A New Way to 
 - P1: Add real payment provider only when the academic prototype is ready for actual fulfilment.
 - P1: Add verified nutrition/allergen data from final formulation and laboratory/supplier documentation.
 - P2: Add consent-based email signup and real social/community content.
+## Iteration — Sep 2026 (hero rotation + Instagram)
+- Hero now auto-rotates through all 3 product packs (CRUNCH → POPS → CRISPS) every 2.6s with crossfade; caption counter and label update per slide.
+- Footer Instagram link now clickable → https://www.instagram.com/millo.snacks (opens in new tab); also added under "Need help?" column.
+- Verified via Playwright: slide labels cycle 01/03 → 03/03 → 01/03; Instagram href/target confirmed.

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Leaf, Menu, Minus, Plus, ShoppingBag, X, Zap } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import "@/App.css";
@@ -16,6 +16,12 @@ const PRODUCTS = [
   { id: "crisps", name: "MILLO CRISPS", flavor: "Herbs & Salt", desc: "Thin, crisp, and full of herby goodness.", color: "green", image: ASSETS.crisps },
 ];
 
+const HERO_SLIDES = [
+  { src: ASSETS.crunch, alt: "MILLO Crunch Peri Peri package", label: "THE BOLD ONE →" },
+  { src: ASSETS.pops, alt: "MILLO Pops Masala package", label: "THE CHATPATA ONE →" },
+  { src: ASSETS.crisps, alt: "MILLO Crisps Herbs & Salt package", label: "THE FRESH ONE →" },
+];
+
 function App() {
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -24,6 +30,11 @@ function App() {
   const [ordered, setOrdered] = useState(false);
   const [orderTotal, setOrderTotal] = useState(0);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [heroIndex, setHeroIndex] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => setHeroIndex((i) => (i + 1) % HERO_SLIDES.length), 2600);
+    return () => clearInterval(timer);
+  }, []);
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -53,7 +64,7 @@ function App() {
     <main id="top">
       <section className="hero section-pad">
         <div className="hero-copy reveal"><div className="eyebrow"><span className="eyebrow-dot" /> THE EVERYDAY CRUNCH</div><h1>CRUNCH<br /><em>DIFFERENT.</em><br />SNACK BETTER.</h1><p className="hero-sub">Meet MILLO — your new everyday snack made for bold cravings, good vibes, and a whole lot of crunch.</p><div className="hero-ctas"><button className="button button-primary" onClick={showShop} data-testid="hero-shop-button">Shop now <ArrowRight size={18} /></button><a href="#shop" className="text-link" data-testid="hero-explore-link">Explore our snacks <ChevronDown size={16} /></a></div><div className="hero-notes"><span><Leaf size={15} /> Made with millet</span><span><Zap size={15} /> Baked, not fried</span><span>₹29 to start</span></div></div>
-        <div className="hero-visual reveal-delay"><div className="hero-sticker">NEW<br /><strong>SNACK<br />OBSESSION</strong></div><div className="hero-image-frame"><img src={ASSETS.crunch} alt="MILLO Crunch Peri Peri package" data-testid="hero-product-image" /></div><div className="hero-caption"><span>01 / 03</span><span>THE BOLD ONE →</span></div></div>
+        <div className="hero-visual reveal-delay"><div className="hero-sticker">NEW<br /><strong>SNACK<br />OBSESSION</strong></div><div className="hero-image-frame">{HERO_SLIDES.map((slide, index) => <img key={slide.alt} src={slide.src} alt={slide.alt} className={index === heroIndex ? "active" : ""} data-testid={index === heroIndex ? "hero-product-image" : `hero-product-image-${index + 1}`} />)}</div><div className="hero-caption"><span data-testid="hero-slide-counter">0{heroIndex + 1} / 03</span><span data-testid="hero-slide-label">{HERO_SLIDES[heroIndex].label}</span></div></div>
       </section>
 
       <section className="marquee"><div>MIX & MATCH YOUR CRAVINGS <b>✳</b> 3 × 30 G COMBO AT ₹79 <b>✳</b> MIX & MATCH YOUR CRAVINGS <b>✳</b></div></section>
@@ -64,7 +75,7 @@ function App() {
       <ComboSection onAdd={() => { PRODUCTS.forEach((p) => addToCart(p, 30)); }} />
       <section className="faq-section section-pad" id="faq"><div className="section-heading"><div><div className="eyebrow">GOOD TO KNOW</div><h2>NO WEIRD<br /><span>SMALL PRINT.</span></h2></div><p>Everything you need to<br />know before the first crunch.</p></div><div className="faq-grid"><Faq q="What makes MILLO different?" a="MILLO brings millet into modern, flavour-forward snack formats — made for the way you actually snack today." /><Faq q="What pack sizes are available?" a="Every flavour comes in 30 g (₹29) and 60 g (₹59) packs. Mix and match your favourites in our combo packs too." /><Faq q="How does checkout work?" a="This prototype collects your order intent and delivery details. You’ll see a confirmation summary — no payment is taken here." /></div></section>
     </main>
-    <footer className="footer"><div className="footer-brand"><img src={ASSETS.logo} alt="MILLO" /><p>A new way to snack.</p></div><div className="footer-links"><div><strong>Explore</strong><a href="#shop">Shop all</a><a href="#combos">Combos</a><a href="#story">Our story</a></div><div><strong>Need help?</strong><a href="#faq">FAQs</a><a href="#top">Shipping & returns</a><a href="mailto:hello@millo.snacks">Contact us</a></div></div><div className="footer-bottom"><span>© 2025 MILLO SNACKS</span><span>PROPOSED POSITIONING · ACADEMIC PROTOTYPE</span><span>Instagram ↗</span></div></footer>
+    <footer className="footer"><div className="footer-brand"><img src={ASSETS.logo} alt="MILLO" /><p>A new way to snack.</p></div><div className="footer-links"><div><strong>Explore</strong><a href="#shop">Shop all</a><a href="#combos">Combos</a><a href="#story">Our story</a></div><div><strong>Need help?</strong><a href="#faq">FAQs</a><a href="#top">Shipping & returns</a><a href="mailto:hello@millo.snacks">Contact us</a><a href="https://www.instagram.com/millo.snacks" target="_blank" rel="noopener noreferrer" data-testid="footer-instagram-link">Instagram</a></div></div><div className="footer-bottom"><span>© 2025 MILLO SNACKS</span><span>PROPOSED POSITIONING · ACADEMIC PROTOTYPE</span><a href="https://www.instagram.com/millo.snacks" target="_blank" rel="noopener noreferrer" data-testid="instagram-link">Instagram ↗</a></div></footer>
 
     {selectedProduct && <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} onAdd={addToCart} />}
     {cartOpen && <CartDrawer cart={cart} subtotal={subtotal} onClose={() => setCartOpen(false)} onUpdate={updateQuantity} onCheckout={() => { setCartOpen(false); setCheckout(true); }} />}
