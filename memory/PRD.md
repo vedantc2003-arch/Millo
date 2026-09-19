@@ -43,3 +43,10 @@ Build a vibrant, modern Gen Z snack brand website for MILLO — “A New Way to 
 - Checkout now also pushes each order into a dedicated Google Form (→ linked Google Sheet) via server-side POST to the form's /formResponse endpoint. Entry-ID mapping lives in backend/.env (GOOGLE_FORM_RESPONSE_URL + GOOGLE_FORM_ENTRY_*). Currently DORMANT: placeholders empty until user creates the form and shares the pre-filled link.
 - Orders record google_form_status (pending/submitted/failed); order log shows "In Google Sheet ✓" badge when submitted.
 - Verified: orders still save normally with integration unconfigured.
+
+## Iteration — Sep 2026 (Google Sheets via Apps Script)
+- Checkout now sends order JSON (name, email, phone, full address, products[{name,size,quantity,price}], total, payment_method, order_code) server-side to user's Apps Script Web App URL (stored in backend/.env as APPS_SCRIPT_URL, never exposed client-side).
+- Checkout form gained Email field + Payment method pills (Cash on delivery / UPI on delivery) — mock only, no payment processing.
+- Orders record sheet_status (pending/submitted/failed); success/failure toasts shown to customer; order log badge "In Google Sheet ✓".
+- BLOCKER (user side): Apps Script deployment returns 403 "You need access" — user must set Deploy → Who has access → "Anyone" and redeploy. Orders save to MongoDB regardless; failed sheet rows do not auto-backfill.
+- Verified e2e: order MILLO-266001 placed via UI with all new fields; error toast path confirmed.

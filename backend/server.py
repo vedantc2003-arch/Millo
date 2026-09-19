@@ -129,6 +129,31 @@ async def submit_to_google_form(doc):
         logger.exception("Google Form submission failed for %s", doc["code"])
         await db.orders.update_one({"id": doc["id"]}, {"$set": {"google_form_status": "failed", "google_form_error": type(exc).__name__}})
 
+APPS_SCRIPT_URL = os.environ.get("APPS_SCRIPT_URL")
+
+async def submit_to_apps_script(doc):
+    try:
+        payload = {
+            "order_code": doc["code"],
+            "name": doc["name"],
+            "email": doc.get("email", ""),
+            "phone": doc["phone"],
+            "address": f"{doc['address']}, {doc['city']} - {doc['pin']}",
+            "products": [{"name": i["name"], "size": f"{i['size']}g", "quantity": i["quantity"], "price": i["price"]} for i in doc["items"]],
+            "total": doc["subtotal"],
+            "payment_method": doc.get("payment_method", ""),
+            "created_at": doc["created_at"],
+        }
+        async with httpx.AsyncClient(timeout=15, follow_redirects=True) as http:
+            resp = await http.post(APPS_SCRIPT_URL, json=payload)
+            resp.raise_for_status()
+        await db.orders.update_one({"id": doc["id"]}, {"$set": {"sheet_status": "submitted"}})
+        doc["sheet_status"] = "submitted"
+    except Exception as exc:
+        logger.exception("Apps Script submission failed for %s", doc["code"])
+        await db.orders.update_one({"id": doc["id"]}, {"$set": {"sheet_status": "failed", "sheet_error": type(exc).__name__}})
+        doc["sheet_status"] = "failed"
+
 class OrderItem(BaseModel):
     name: str
     size: int
@@ -141,6 +166,8 @@ class OrderCreate(BaseModel):
     address: str
     city: str
     pin: str
+    email: str = ""
+    payment_method: str = "Cash on delivery"
     items: List[OrderItem]
     subtotal: int
 
@@ -152,9 +179,13 @@ async def create_order(order: OrderCreate):
     doc["created_at"] = datetime.now(timezone.utc).isoformat()
     if GF_CONFIGURED:
         doc["google_form_status"] = "pending"
+    if APPS_SCRIPT_URL:
+        doc["sheet_status"] = "pending"
     await db.orders.insert_one(doc)
     if GF_CONFIGURED:
         await submit_to_google_form(doc)
+    if APPS_SCRIPT_URL:
+        await submit_to_apps_script(doc)
     doc.pop("_id", None)
     return doc
 
