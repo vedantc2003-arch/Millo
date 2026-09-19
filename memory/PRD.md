@@ -17,6 +17,7 @@ Build a vibrant, modern Gen Z snack brand website for MILLO — “A New Way to 
 - Checkout/order-intent form with validation and confirmation summary.
 - Responsive mobile navigation menu and mobile layouts.
 - Descriptive data-testid attributes across interactive and critical user-facing UI.
+- Final visual asset pass completed with the newly supplied transparent MILLO logo and correctly matched red CRUNCH, yellow POPS, and green CRISPS pack images across hero, cards, modals, combo artwork, and cart.
 
 ## Backlog
 - P0: Connect order-intent submissions to a backend collection or email workflow if persistence is required.
