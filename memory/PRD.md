@@ -38,3 +38,8 @@ Build a vibrant, modern Gen Z snack brand website for MILLO — “A New Way to 
 - Checkout form now POSTs to /api/orders (FastAPI + MongoDB `orders` collection); confirmation code comes from the server (MILLO-XXXXXX). No payment — order intent only, per user request.
 - Owner view: footer "Owner · Order log" opens a modal listing all order intents (buyer name, phone, address, items, total, timestamp) via GET /api/orders. Not password-protected (prototype).
 - Verified end-to-end: placed order in browser (MILLO-669022, Asha Rao), appeared in order log; API curl POST/GET validated.
+
+## Iteration — Sep 2026 (Google Form pipeline, dormant)
+- Checkout now also pushes each order into a dedicated Google Form (→ linked Google Sheet) via server-side POST to the form's /formResponse endpoint. Entry-ID mapping lives in backend/.env (GOOGLE_FORM_RESPONSE_URL + GOOGLE_FORM_ENTRY_*). Currently DORMANT: placeholders empty until user creates the form and shares the pre-filled link.
+- Orders record google_form_status (pending/submitted/failed); order log shows "In Google Sheet ✓" badge when submitted.
+- Verified: orders still save normally with integration unconfigured.

@@ -95,6 +95,40 @@ async def instagram_posts():
             return {"configured": True, "data": _ig_cache["data"], "stale": True}
         return {"configured": True, "data": [], "error": "Instagram feed temporarily unavailable"}
 
+GF_URL = os.environ.get("GOOGLE_FORM_RESPONSE_URL")
+GF_ENTRIES = {
+    "name": os.environ.get("GOOGLE_FORM_ENTRY_NAME"),
+    "phone": os.environ.get("GOOGLE_FORM_ENTRY_PHONE"),
+    "address": os.environ.get("GOOGLE_FORM_ENTRY_ADDRESS"),
+    "city": os.environ.get("GOOGLE_FORM_ENTRY_CITY"),
+    "pin": os.environ.get("GOOGLE_FORM_ENTRY_PIN"),
+    "items": os.environ.get("GOOGLE_FORM_ENTRY_ITEMS"),
+    "total": os.environ.get("GOOGLE_FORM_ENTRY_TOTAL"),
+    "code": os.environ.get("GOOGLE_FORM_ENTRY_CODE"),
+}
+GF_CONFIGURED = bool(GF_URL) and all(GF_ENTRIES.values())
+
+async def submit_to_google_form(doc):
+    try:
+        items_summary = "; ".join(f"{i['name']} {i['size']}g x{i['quantity']} @ ₹{i['price']}" for i in doc["items"])
+        payload = {
+            GF_ENTRIES["name"]: doc["name"],
+            GF_ENTRIES["phone"]: doc["phone"],
+            GF_ENTRIES["address"]: doc["address"],
+            GF_ENTRIES["city"]: doc["city"],
+            GF_ENTRIES["pin"]: doc["pin"],
+            GF_ENTRIES["items"]: items_summary,
+            GF_ENTRIES["total"]: str(doc["subtotal"]),
+            GF_ENTRIES["code"]: doc["code"],
+        }
+        async with httpx.AsyncClient(timeout=10, follow_redirects=True) as http:
+            resp = await http.post(GF_URL, data=payload)
+            resp.raise_for_status()
+        await db.orders.update_one({"id": doc["id"]}, {"$set": {"google_form_status": "submitted"}})
+    except Exception as exc:
+        logger.exception("Google Form submission failed for %s", doc["code"])
+        await db.orders.update_one({"id": doc["id"]}, {"$set": {"google_form_status": "failed", "google_form_error": type(exc).__name__}})
+
 class OrderItem(BaseModel):
     name: str
     size: int
@@ -116,7 +150,11 @@ async def create_order(order: OrderCreate):
     doc["id"] = str(uuid.uuid4())
     doc["code"] = "MILLO-" + uuid.uuid4().hex[:6].upper()
     doc["created_at"] = datetime.now(timezone.utc).isoformat()
+    if GF_CONFIGURED:
+        doc["google_form_status"] = "pending"
     await db.orders.insert_one(doc)
+    if GF_CONFIGURED:
+        await submit_to_google_form(doc)
     doc.pop("_id", None)
     return doc
 
