@@ -1,0 +1,61 @@
+{
+  "app_name": "MILLO — A New Way to Snack",
+  "app_type": "e-commerce",
+  "theme": "vibrant Gen Z snack brand with dark mode energy, bold neon accents, and clean editorial structure",
+  "typography": {
+    "headings": {
+      "family": "Outfit, sans-serif",
+      "weights": ["700", "850", "900"],
+      "classes": "font-extrabold tracking-tight"
+    },
+    "body": {
+      "family": "Plus Jakarta Sans, sans-serif",
+      "weights": ["400", "500", "600"],
+      "classes": "font-normal leading-relaxed"
+    },
+    "mono": {
+      "family": "JetBrains Mono, monospace",
+      "weights": ["500", "700"]
+    }
+  },
+  "colors": {
+    "primary": "#FF3B30",
+    "primary_hover": "#E03229",
+    "secondary": "#00C853",
+    "accent_yellow": "#FFD600",
+    "accent_green": "#00E676",
+    "accent_red": "#FF1744",
+    "dark_void": "#0A0B0E",
+    "dark_card": "#151821",
+    "dark_border": "#2A2E3D",
+    "light_bg": "#F9FAFC",
+    "light_card": "#FFFFFF",
+    "light_border": "#E2E8F0"
+  },
+  "image_urls": {
+    "crunch_package": "https://images.unsplash.com/photo-1677047637764-377f1ca98ac9?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "crisps_package": "https://images.pexels.com/photos/7033644/pexels-photo-7033644.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "pops_package": "https://images.unsplash.com/photo-1708746333890-8e775f97f0a6?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "hero_snack_spread": "https://images.pexels.com/photos/13060681/pexels-photo-13060681.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "lifestyle_snack": "https://images.pexels.com/photos/13060679/pexels-photo-13060679.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  },
+  "components": [
+    "Navbar with live cart badge and quick links",
+    "Hero Section with CRUNCH DIFFERENT. SNACK BETTER. headline and interactive CTA",
+    "Offer Banner for Mix & Match Cravings (3x30g combo at ₹79)",
+    "Product Catalog (MILLO CRUNCH, MILLO POPS, MILLO CRISPS) with 30g ₹29 / 60g ₹59 pack selectors and quick add-to-cart",
+    "Interactive Build-a-Pack Combo Section (£79 / ₹159 / ₹239 tiers)",
+    "Why MILLO (Made with Millet, Baked Not Fried, No Maida, Fibre & Plant Protein)",
+    "Brand Story / Anti-Boring Snack Manifesto",
+    "Product Detail View (Modal or dedicated view with ingredients, allergens, storage, delivery)",
+    "Working Slide-over Cart with quantity controls and combo discount calc",
+    "Order-Intent Checkout Form with delivery details and instant confirmation screen",
+    "FAQ & Trust Section",
+    "Footer with newsletter signup and brand links"
+  ],
+  "accessibility": {
+    "contrast_target": "WCAG AA (minimum 4.5:1 for body, 3:1 for large text and UI controls)",
+    "keyboard_navigation": "Fully supported with focus states",
+    "reduced_motion": "Respected via CSS and animation wrappers"
+  }
+}
