@@ -4,10 +4,10 @@ import { toast, Toaster } from "sonner";
 import "@/App.css";
 
 const ASSETS = {
-  crisps: "https://customer-assets-gfyr7b9c.emergentagent.net/job_046ec094-68ac-4a44-8eb3-88841abbaac4/artifacts/rxmphyyi_ChatGPT%20Image%20Sep%2020%2C%202026%2C%2002_02_33%20AM.png",
-  crunch: "https://customer-assets-gfyr7b9c.emergentagent.net/job_046ec094-68ac-4a44-8eb3-88841abbaac4/artifacts/7bqqvkah_ChatGPT%20Image%20Sep%2020%2C%202026%2C%2001_45_21%20AM.png",
-  logo: "https://customer-assets-gfyr7b9c.emergentagent.net/job_046ec094-68ac-4a44-8eb3-88841abbaac4/artifacts/3rdh9ysd_ChatGPT%20Image%20Sep%2020%2C%202026%2C%2001_57_03%20AM.png",
-  pops: "https://customer-assets-gfyr7b9c.emergentagent.net/job_046ec094-68ac-4a44-8eb3-88841abbaac4/artifacts/s6ok9yzl_ChatGPT%20Image%20Sep%2020%2C%202026%2C%2002_03_53%20AM.png",
+  crisps: "https://customer-assets-jai6qajn.emergentagent.net/job_millo-crunch/artifacts/qr7krfcy_ChatGPT%20Image%20Sep%2020%2C%202026%2C%2003_19_32%20AM.png",
+  crunch: "https://customer-assets-jai6qajn.emergentagent.net/job_millo-crunch/artifacts/f1gajnzo_ChatGPT%20Image%20Sep%2020%2C%202026%2C%2003_22_01%20AM.png",
+  logo: "https://customer-assets-jai6qajn.emergentagent.net/job_millo-crunch/artifacts/q9xa9rl2_ChatGPT%20Image%20Sep%2020%2C%202026%2C%2003_16_55%20AM.png",
+  pops: "https://customer-assets-jai6qajn.emergentagent.net/job_millo-crunch/artifacts/1n6cq14d_ChatGPT%20Image%20Sep%2020%2C%202026%2C%2003_20_55%20AM.png",
 };
 
 const PRODUCTS = [
@@ -44,7 +44,7 @@ function App() {
     <Toaster position="bottom-right" richColors />
     <div className="top-strip"><span>GOOD GRAINS. BIG CRAVINGS.</span><span className="strip-dot">●</span><span>3 × 30 g COMBO AT ₹79</span><ArrowRight size={14} /></div>
     <header className="nav" data-testid="site-navigation">
-      <a href="#top" className="brand-mark" data-testid="brand-home"><img src={ASSETS.logo} alt="MILLO — A new way to snack" /></a>
+      <a href="#top" className="brand-mark" data-testid="brand-home"><img src={ASSETS.logo} alt="MILLO — A new way to snack" style={{ width: 116, marginLeft: 0 }} /></a>
       <nav className="nav-links"><a href="#shop" data-testid="nav-shop-link">Shop</a><a href="#combos" data-testid="nav-combos-link">Combos</a><a href="#story" data-testid="nav-story-link">Our story</a></nav>
       <div className="nav-actions"><button className="nav-shop" onClick={showShop} data-testid="nav-shop-button">Shop now <ArrowRight size={16} /></button><button className="cart-trigger" onClick={() => setCartOpen(true)} data-testid="cart-open-button"><ShoppingBag size={20} /><span>Cart</span><b data-testid="cart-count">{count}</b></button><button className="menu-button" aria-label="Open menu" onClick={() => setMobileMenu(!mobileMenu)} data-testid="mobile-menu-button"><Menu /></button></div>
     </header>
