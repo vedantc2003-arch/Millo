@@ -23,6 +23,7 @@ function App() {
   const [checkout, setCheckout] = useState(false);
   const [ordered, setOrdered] = useState(false);
   const [orderTotal, setOrderTotal] = useState(0);
+  const [mobileMenu, setMobileMenu] = useState(false);
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -45,8 +46,9 @@ function App() {
     <header className="nav" data-testid="site-navigation">
       <a href="#top" className="brand-mark" data-testid="brand-home"><img src={ASSETS.logo} alt="MILLO — A new way to snack" /></a>
       <nav className="nav-links"><a href="#shop" data-testid="nav-shop-link">Shop</a><a href="#combos" data-testid="nav-combos-link">Combos</a><a href="#story" data-testid="nav-story-link">Our story</a></nav>
-      <div className="nav-actions"><button className="nav-shop" onClick={showShop} data-testid="nav-shop-button">Shop now <ArrowRight size={16} /></button><button className="cart-trigger" onClick={() => setCartOpen(true)} data-testid="cart-open-button"><ShoppingBag size={20} /><span>Cart</span><b data-testid="cart-count">{count}</b></button><button className="menu-button" aria-label="Open menu" data-testid="mobile-menu-button"><Menu /></button></div>
+      <div className="nav-actions"><button className="nav-shop" onClick={showShop} data-testid="nav-shop-button">Shop now <ArrowRight size={16} /></button><button className="cart-trigger" onClick={() => setCartOpen(true)} data-testid="cart-open-button"><ShoppingBag size={20} /><span>Cart</span><b data-testid="cart-count">{count}</b></button><button className="menu-button" aria-label="Open menu" onClick={() => setMobileMenu(!mobileMenu)} data-testid="mobile-menu-button"><Menu /></button></div>
     </header>
+    {mobileMenu && <div className="mobile-menu" style={{ position: "fixed", top: 97, left: 0, right: 0, zIndex: 19, display: "flex", background: "var(--ink)", padding: "18px 6vw", gap: 10, boxShadow: "0 12px 25px rgba(0,0,0,.15)" }} data-testid="mobile-menu"><a style={{ color: "var(--cream)", display: "flex", justifyContent: "space-between", alignItems: "center", flex: 1, padding: "13px 10px", border: "1px solid #3d514c", font: "10px 'DM Mono'", textTransform: "uppercase" }} href="#shop" onClick={() => setMobileMenu(false)} data-testid="mobile-shop-link">Shop <ArrowRight size={15} /></a><a style={{ color: "var(--cream)", display: "flex", justifyContent: "space-between", alignItems: "center", flex: 1, padding: "13px 10px", border: "1px solid #3d514c", font: "10px 'DM Mono'", textTransform: "uppercase" }} href="#combos" onClick={() => setMobileMenu(false)} data-testid="mobile-combos-link">Combos <ArrowRight size={15} /></a><a style={{ color: "var(--cream)", display: "flex", justifyContent: "space-between", alignItems: "center", flex: 1, padding: "13px 10px", border: "1px solid #3d514c", font: "10px 'DM Mono'", textTransform: "uppercase" }} href="#story" onClick={() => setMobileMenu(false)} data-testid="mobile-story-link">Our story <ArrowRight size={15} /></a></div>}
 
     <main id="top">
       <section className="hero section-pad">
