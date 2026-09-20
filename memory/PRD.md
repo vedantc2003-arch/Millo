@@ -50,3 +50,6 @@ Build a vibrant, modern Gen Z snack brand website for MILLO — “A New Way to 
 - Orders record sheet_status (pending/submitted/failed); success/failure toasts shown to customer; order log badge "In Google Sheet ✓".
 - BLOCKER (user side): Apps Script deployment returns 403 "You need access" — user must set Deploy → Who has access → "Anyone" and redeploy. Orders save to MongoDB regardless; failed sheet rows do not auto-backfill.
 - Verified e2e: order MILLO-266001 placed via UI with all new fields; error toast path confirmed.
+
+## Iteration — Sep 2026 (cart scrollbar)
+- Cart drawer item list now scrolls with a slim styled scrollbar (red on hover); subtotal/checkout bar stays pinned at the bottom. Verified with 6 cart lines: list scrolls, summary remains visible.
