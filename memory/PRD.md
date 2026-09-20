@@ -53,3 +53,8 @@ Build a vibrant, modern Gen Z snack brand website for MILLO — “A New Way to 
 
 ## Iteration — Sep 2026 (cart scrollbar)
 - Cart drawer item list now scrolls with a slim styled scrollbar (red on hover); subtotal/checkout bar stays pinned at the bottom. Verified with 6 cart lines: list scrolls, summary remains visible.
+
+## Iteration — Sep 2026 (Vercel ERESOLVE fix)
+- Root cause was twofold: react-day-picker 8.10.1 peer-dep conflicted with date-fns 4.1.0 AND with react 19 (npm strict mode). yarn.lock was untracked so Vercel used npm.
+- Fix (no --force): react-day-picker → ^9.14.0 (peer react >=16.8, bundles date-fns ^4), date-fns kept ^4.1.0, calendar.jsx migrated to v9 API (button_previous/button_next, month_grid, day_button, Chevron component).
+- Verified: npm install --dry-run passes, yarn build passes (build/ generated), preview smoke test OK. Committed 38d88b4 on main; NO git remote configured — push pending user remote.
